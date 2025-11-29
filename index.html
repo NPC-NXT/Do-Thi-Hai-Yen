@@ -4,55 +4,52 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Floating Hearts — 💖</title>
-  <meta name="description" content="Trang tim bay lãng mạn và đẹp — truyền thông điệp chính qua ?text= trong URL." />
+  <meta name="description" content="Trang tim bay lãng mạn — truyền thông điệp chính qua ?text= trong URL." />
 
   <style>
-    /* Reset & layout */
     :root{
       --bg-1: #0b0710;
       --bg-2: #12081a;
       --accent: #ff6b9a;
       --accent-2: #ff2d95;
-      --glass: rgba(255,255,255,0.04);
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       background: radial-gradient(1200px 600px at 10% 10%, rgba(255,50,120,0.06), transparent),
                   radial-gradient(800px 400px at 90% 80%, rgba(255,20,100,0.04), transparent),
                   linear-gradient(180deg,var(--bg-1),var(--bg-2));
-      color: #fff;
+      color:#fff;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      overflow:hidden;
       min-height:100vh;
+      overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:clamp(16px,4vmin,48px);
     }
 
-    /* Heart field (behind content) */
+    /* Container for floating hearts */
     .hearts {
       position:fixed;
       inset:0;
       pointer-events:none;
-      overflow:hidden;
       z-index:0;
+      overflow:hidden;
     }
 
     .heart {
       position:absolute;
-      left:50%;
-      top:110%;
-      transform:translateX(-50%) rotate(45deg);
-      will-change:transform,opacity,filter;
+      left:0;
+      top:0;
+      transform-origin:center center;
+      will-change:transform,left,top,opacity,filter;
       user-select:none;
-      filter: drop-shadow(0 6px 18px rgba(255,60,120,0.08));
-      animation-name:floatUp, sway, fadeInOut;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+      filter: drop-shadow(0 10px 30px rgba(255,60,120,0.08));
+      opacity:0.95;
     }
 
     .heart .shape {
@@ -61,13 +58,12 @@
       height:1em;
       background:var(--accent);
       position:relative;
-      transform:rotate(-45deg);
+      transform: rotate(-45deg);
       border-radius:0.25em;
       box-shadow:
         0 0 18px rgba(255,110,156,0.18),
         0 0 36px rgba(255,60,140,0.12);
     }
-    /* hai quả bầu */
     .heart .shape::before,
     .heart .shape::after{
       content:"";
@@ -78,7 +74,6 @@
       border-radius:50%;
       top:-50%;
       left:0;
-      transform-origin:50% 50%;
       box-shadow:
         0 0 18px rgba(255,110,156,0.18),
         0 0 36px rgba(255,60,140,0.12);
@@ -88,32 +83,16 @@
       top:0;
     }
 
-    /* Biến thể màu */
-    .heart.variant-2 .shape{ background:var(--accent-2) }
+    .heart.variant-2 .shape,
     .heart.variant-2 .shape::before,
-    .heart.variant-2 .shape::after{ background:var(--accent-2) }
-
-    /* Các animation */
-    @keyframes floatUp{
-      0%{ transform: translateX(-50%) translateY(0) rotate(0deg) scale(1) }
-      100%{ transform: translateX(-50%) translateY(-140vh) rotate(360deg) scale(1.15) }
-    }
-    @keyframes sway{
-      0%{ transform: translateX(-50%) translateY(0) rotate(0deg) }
-      50%{ transform: translateX(-40%) translateY(-10vh) rotate(10deg) }
-      100%{ transform: translateX(-60%) translateY(-20vh) rotate(-5deg) }
-    }
-    @keyframes fadeInOut{
-      0%{ opacity:0 }
-      5%{ opacity:1 }
-      85%{ opacity:1 }
-      100%{ opacity:0 }
+    .heart.variant-2 .shape::after{
+      background:var(--accent-2);
     }
 
-    /* Thẻ chứa nội dung chính */
+    /* Center card with only the main message (removed tips as requested) */
     .card{
       position:relative;
-      z-index:2;
+      z-index:3;
       max-width:1100px;
       width:100%;
       text-align:center;
@@ -127,35 +106,20 @@
 
     .message{
       font-weight:700;
-      color: #fff;
-      font-size: clamp(1.6rem, 6vw, 3.2rem);
+      color:#fff;
+      font-size: clamp(1.6rem,6vw,3.2rem);
       line-height:1.05;
       text-shadow:
         0 6px 18px rgba(0,0,0,0.6),
         0 0 18px rgba(255,80,140,0.18);
-      margin-bottom: clamp(12px, 2.4vmin, 18px);
       word-break:break-word;
       white-space:pre-wrap;
     }
 
-    .sub{
-      color: rgba(255,255,255,0.72);
-      font-size: clamp(.9rem,2.6vw,1.1rem);
-      margin-top:6px;
-    }
-
-    .hint{
-      margin-top:14px;
-      font-size:0.85rem;
-      color:rgba(255,255,255,0.6);
-    }
-
-    /* Giảm chuyển động nếu người dùng yêu cầu */
     @media (prefers-reduced-motion: reduce) {
-      .heart{ animation: none; opacity:.95 }
+      .heart{ transition:none; animation:none; opacity:.95 }
     }
 
-    /* Responsive */
     @media (max-width:520px){
       .card{ padding:20px;border-radius:14px }
       .message{ font-size:clamp(1.4rem,7vw,2.2rem) }
@@ -167,8 +131,6 @@
 
   <main class="card" role="main" aria-labelledby="main-message">
     <h1 id="main-message" class="message">Gửi yêu thương…</h1>
-    <p class="sub" id="sub">Mẹo: thay đổi nội dung chính bằng cách thêm ?text=Tin%20nhắn vào URL</p>
-    <p class="hint">Tạo bằng trái tim phát sáng • Responsive • Hoạt ảnh mượt</p>
   </main>
 
   <script>
@@ -182,73 +144,115 @@
       document.title = message + ' — 💖';
     })();
 
-    // Tạo các trái tim bay với thuộc tính ngẫu nhiên
-    (function createHearts(){
+    // Tạo trái tim bay xung quanh màn hình, bay liên tục (JS-driven animation)
+    (function(){
       const container = document.getElementById('hearts');
       const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const HEART_COUNT = prefersReduced ? 6 : 26;
+      const HEART_COUNT = prefersReduced ? 8 : 32;
 
+      const vw = () => Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      const vh = () => Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
       const rand = (min, max) => Math.random() * (max - min) + min;
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+      const hearts = [];
 
       for(let i=0;i<HEART_COUNT;i++){
-        const heart = document.createElement('div');
-        heart.className = 'heart ' + (Math.random() > 0.7 ? 'variant-2' : '');
-        const left = rand(3,97);
-        heart.style.left = left + '%';
-
-        const size = rand(16, 88); // px
-        heart.style.fontSize = size + 'px';
-        heart.style.transform = `translateX(-50%) rotate(${rand(0,90)}deg)`;
-
-        const duration = rand(8, 20);
-        const delay = rand(-10, 6);
-        heart.style.animationDuration = `${duration}s, ${rand(6,14)}s, ${duration}s`;
-        heart.style.animationDelay = `${delay}s, ${delay}s, ${delay}s`;
-        heart.style.opacity = rand(0.7, 1);
-
+        const el = document.createElement('div');
+        el.className = 'heart ' + (Math.random() > 0.7 ? 'variant-2' : '');
         const shape = document.createElement('span');
         shape.className = 'shape';
-        heart.appendChild(shape);
+        el.appendChild(shape);
 
-        container.appendChild(heart);
+        // random size
+        const size = rand(14, 86); // px
+        el.style.fontSize = size + 'px';
 
-        // Gỡ tim sau khi kết thúc hoạt ảnh để tránh DOM tăng không kiểm soát
-        setTimeout(() => {
-          try {
-            container.removeChild(heart);
-            if(Math.random() > 0.3 && !prefersReduced) {
-              setTimeout(() => {
-                if(container) container.appendChild(createSingleHeart(left));
-              }, rand(500, 4000));
-            }
-          } catch(e){}
-        }, (Math.abs(delay) + duration + 2) * 1000);
+        // initial position anywhere on screen
+        const x = rand(0, vw());
+        const y = rand(0, vh());
+
+        // velocity (slow drifting)
+        const speed = rand(0.05, 0.6); // base speed multiplier
+        const angle = rand(0, Math.PI * 2);
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        // rotation and spin
+        const rot = rand(0, 360);
+        const spin = rand(-0.05, 0.12); // deg per ms
+
+        // subtle pulsate
+        const scale = rand(0.9, 1.15);
+
+        // initial style
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.transform = `translate(-50%,-50%) rotate(${rot}deg) scale(${scale})`;
+        el.style.opacity = rand(0.7, 1);
+
+        container.appendChild(el);
+
+        hearts.push({
+          el, x, y, vx, vy, rot, spin, scale,
+          wiggleFactor: rand(0.02, 0.12) // how much velocity wiggles over time
+        });
       }
 
-      function createSingleHeart(leftPercent) {
-        const heart = document.createElement('div');
-        heart.className = 'heart ' + (Math.random() > 0.7 ? 'variant-2' : '');
-        const left = leftPercent ?? rand(3,97);
-        heart.style.left = left + '%';
-        const size = rand(16, 88);
-        heart.style.fontSize = size + 'px';
-        heart.style.transform = `translateX(-50%) rotate(${rand(0,90)}deg)`;
-        const duration = rand(8, 20);
-        const delay = rand(0, 6);
-        heart.style.animationDuration = `${duration}s, ${rand(6,14)}s, ${duration}s`;
-        heart.style.animationDelay = `${delay}s, ${delay}s, ${delay}s`;
-        heart.style.opacity = rand(0.7, 1);
-        const shape = document.createElement('span');
-        shape.className = 'shape';
-        heart.appendChild(shape);
-
-        setTimeout(()=>{
-          try{ container.removeChild(heart); }catch(e){}
-        }, (delay + duration + 2)*1000);
-
-        return heart;
+      if(prefersReduced){
+        // keep them static-ish if user prefers reduced motion
+        return;
       }
 
+      // Animation loop
+      let last = performance.now();
+      function tick(now){
+        const dt = Math.min(64, now - last); // ms, cap to avoid jumps
+        last = now;
+        const W = vw(), H = vh();
+        for(const h of hearts){
+          // gentle random acceleration to create organic motion
+          h.vx += (rand(-1,1) * h.wiggleFactor) * (dt / 16);
+          h.vy += (rand(-1,1) * h.wiggleFactor) * (dt / 16);
+
+          // clamp velocity
+          const vmax = 0.9;
+          h.vx = clamp(h.vx, -vmax, vmax);
+          h.vy = clamp(h.vy, -vmax, vmax);
+
+          // update position
+          h.x += h.vx * dt;
+          h.y += h.vy * dt;
+
+          // wrap-around so hearts always stay around the viewport
+          const margin = 60;
+          if(h.x < -margin) h.x = W + margin;
+          if(h.x > W + margin) h.x = -margin;
+          if(h.y < -margin) h.y = H + margin;
+          if(h.y > H + margin) h.y = -margin;
+
+          // gentle rotation change
+          h.rot = (h.rot + h.spin * dt) % 360;
+
+          // apply transform and position
+          h.el.style.left = h.x + 'px';
+          h.el.style.top = h.y + 'px';
+          h.el.style.transform = `translate(-50%,-50%) rotate(${h.rot}deg) scale(${h.scale})`;
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+
+      // Recompute positions on resize to avoid hearts stuck out of bounds
+      window.addEventListener('resize', () => {
+        const W = vw(), H = vh();
+        for(const h of hearts){
+          h.x = clamp(h.x, 0, W);
+          h.y = clamp(h.y, 0, H);
+        }
+      }, {passive:true});
     })();
   </script>
 </body>
