@@ -3,257 +3,175 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Floating Hearts — 💖</title>
-  <meta name="description" content="Trang tim bay lãng mạn — truyền thông điệp chính qua ?text= trong URL." />
-
+  <title>Floating Hearts — ❤️</title>
   <style>
     :root{
-      --bg-1: #0b0710;
-      --bg-2: #12081a;
-      --accent: #ff6b9a;
-      --accent-2: #ff2d95;
+      --bg-1:#0b0710;
+      --bg-2:#12081a;
+      --accent:#ff6b9a;
+      --text:#fff;
     }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,50,120,0.06), transparent),
-                  radial-gradient(800px 400px at 90% 80%, rgba(255,20,100,0.04), transparent),
-                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
-      color:#fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height:100vh;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:clamp(16px,4vmin,48px);
-    }
-
-    /* Container for floating hearts */
-    .hearts {
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-      overflow:hidden;
-    }
-
-    .heart {
-      position:absolute;
-      left:0;
-      top:0;
-      transform-origin:center center;
-      will-change:transform,left,top,opacity,filter;
-      user-select:none;
-      filter: drop-shadow(0 10px 30px rgba(255,60,120,0.08));
-      opacity:0.95;
-    }
-
-    .heart .shape {
-      display:block;
-      width:1em;
-      height:1em;
-      background:var(--accent);
-      position:relative;
-      transform: rotate(-45deg);
-      border-radius:0.25em;
-      box-shadow:
-        0 0 18px rgba(255,110,156,0.18),
-        0 0 36px rgba(255,60,140,0.12);
-    }
-    .heart .shape::before,
-    .heart .shape::after{
-      content:"";
-      position:absolute;
-      width:1em;
-      height:1em;
-      background:var(--accent);
-      border-radius:50%;
-      top:-50%;
-      left:0;
-      box-shadow:
-        0 0 18px rgba(255,110,156,0.18),
-        0 0 36px rgba(255,60,140,0.12);
-    }
-    .heart .shape::after{
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial, sans-serif;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));overflow:hidden;color:var(--text)}
+    .center {
+      position: absolute;
       left:50%;
-      top:0;
-    }
-
-    .heart.variant-2 .shape,
-    .heart.variant-2 .shape::before,
-    .heart.variant-2 .shape::after{
-      background:var(--accent-2);
-    }
-
-    /* Center card with only the main message (removed tips as requested) */
-    .card{
-      position:relative;
-      z-index:3;
-      max-width:1100px;
-      width:100%;
+      top:46%;
+      transform:translate(-50%,-50%);
       text-align:center;
-      padding:clamp(24px,6vmin,64px);
-      border-radius:18px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 6px 40px rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px) saturate(120%);
-      border: 1px solid rgba(255,255,255,0.03);
+      z-index: 10;
+      padding: 36px 44px;
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 18px 50px rgba(2,6,23,0.6);
+      min-width: 280px;
+      max-width: 1000px;
+    }
+    .center h1{
+      margin:0 0 10px 0;
+      font-size: clamp(28px, 6vw, 56px);
+      letter-spacing: -0.02em;
+      color: white;
+      line-height:1.02;
+    }
+    .subtitle{ margin:0; color:rgba(255,255,255,0.78); font-size:14px; opacity:0.8; }
+    .footer{ margin:8px 0 0; color:rgba(255,255,255,0.65); font-size:12px; opacity:0.7; }
+    /* HEARTS */
+    .heart {
+      position: fixed;
+      will-change: transform, opacity;
+      pointer-events: none;
+      z-index: 6;
+      font-size: 28px;
+      opacity: 0;
+      transform-origin: center;
+      animation: floatUp linear forwards;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      user-select: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0; }
+      8% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { transform: translateY(-160vh) rotate(360deg) scale(1.05); opacity: 0; }
+    }
+    /* sparkle */
+    .spark {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.05) 60%);
+      z-index:4;
+      pointer-events:none;
+      animation: floatUp linear forwards;
     }
 
-    .message{
-      font-weight:700;
-      color:#fff;
-      font-size: clamp(1.6rem,6vw,3.2rem);
-      line-height:1.05;
-      text-shadow:
-        0 6px 18px rgba(0,0,0,0.6),
-        0 0 18px rgba(255,80,140,0.18);
-      word-break:break-word;
-      white-space:pre-wrap;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .heart{ transition:none; animation:none; opacity:.95 }
-    }
-
-    @media (max-width:520px){
-      .card{ padding:20px;border-radius:14px }
-      .message{ font-size:clamp(1.4rem,7vw,2.2rem) }
+    /* small responsiveness */
+    @media (max-width:480px){
+      .center{ padding:18px; top:44% }
+      .center h1{ font-size: clamp(20px, 9vw, 34px); }
+      .subtitle{ font-size:13px }
+      .footer{ font-size:11px }
     }
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts" aria-hidden="true"></div>
+  <div class="center" id="card">
+    <h1 id="title">Chào bạn ❤️</h1>
+    <p class="subtitle" id="subtitle">Mẹo: thay đổi nội dung chính bằng cách thêm <code>?text=Tên của bạn</code> vào URL</p>
+    <p class="footer">Tạo bằng trái tim phát sáng · Responsive · Hoạt ảnh mượt</p>
+  </div>
 
-  <main class="card" role="main" aria-labelledby="main-message">
-    <h1 id="main-message" class="message">Gửi yêu thương…</h1>
-  </main>
-
-  <script>
-    // Lấy message từ ?text= (gán an toàn bằng textContent)
-    (function(){
+<script>
+  // --- Lấy text từ query param ?text=
+  function getQueryText() {
+    try {
       const params = new URLSearchParams(location.search);
-      const raw = params.get('text');
-      const message = raw ? raw : 'Em làm trái tim anh/ chị bay bổng.';
-      const el = document.getElementById('main-message');
-      el.textContent = message;
-      document.title = message + ' — 💖';
-    })();
+      const raw = params.get('text') || params.get('name') || params.get('q') || '';
+      return decodeURIComponent(raw).trim().slice(0, 120);
+    } catch(e){ return ''; }
+  }
+  const userText = getQueryText();
+  const titleEl = document.getElementById('title');
+  const subtitleEl = document.getElementById('subtitle');
+  if (userText) {
+    titleEl.textContent = userText;
+    subtitleEl.textContent = "Chúc bạn một ngày thật ấm áp 💖";
+  }
 
-    // Tạo trái tim bay xung quanh màn hình, bay liên tục (JS-driven animation)
-    (function(){
-      const container = document.getElementById('hearts');
-      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const HEART_COUNT = prefersReduced ? 8 : 32;
+  // container (for removal safety)
+  const container = document.body;
 
-      const vw = () => Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-      const vh = () => Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-      const rand = (min, max) => Math.random() * (max - min) + min;
-      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  // helper random
+  function rand(min, max){ return Math.random()*(max-min)+min; }
+  const heartVariants = ['❤️','💖','💘','💗','💕','❣️','💝'];
 
-      const hearts = [];
+  function createHeart(leftPercent){
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = heartVariants[Math.floor(Math.random()*heartVariants.length)];
+    const size = Math.floor(rand(20, 56)); // size
+    heart.style.fontSize = size + 'px';
+    const left = (typeof leftPercent === 'number') ? leftPercent : rand(5,95);
+    heart.style.left = left + 'vw';
+    const duration = rand(6, 12); // seconds
+    heart.style.animationDuration = duration + 's';
+    // slight horizontal drift using translateX in style (random)
+    const rotate = (rand(-40,40)).toFixed(0);
+    heart.style.transform = `translateY(0) rotate(${rotate}deg) scale(${(size/40).toFixed(2)})`;
+    heart.style.opacity = 0;
+    container.appendChild(heart);
 
-      for(let i=0;i<HEART_COUNT;i++){
-        const el = document.createElement('div');
-        el.className = 'heart ' + (Math.random() > 0.7 ? 'variant-2' : '');
-        const shape = document.createElement('span');
-        shape.className = 'shape';
-        el.appendChild(shape);
+    // remove after animation end (duration + small buffer)
+    setTimeout(()=>{
+      try{ container.removeChild(heart); }catch(e){}
+    }, (duration + 0.6) * 1000);
 
-        // random size
-        const size = rand(14, 86); // px
-        el.style.fontSize = size + 'px';
+    return heart;
+  }
 
-        // initial position anywhere on screen
-        const x = rand(0, vw());
-        const y = rand(0, vh());
+  function createSpark(leftPercent){
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const left = (typeof leftPercent === 'number') ? leftPercent : rand(4,96);
+    s.style.left = left + 'vw';
+    const size = rand(4,10);
+    s.style.width = s.style.height = size + 'px';
+    const dur = rand(5,10);
+    s.style.animationDuration = dur + 's';
+    container.appendChild(s);
+    setTimeout(()=>{ try{ container.removeChild(s);}catch(e){} }, (dur+0.5)*1000);
+    return s;
+  }
 
-        // velocity (slow drifting)
-        const speed = rand(0.05, 0.6); // base speed multiplier
-        const angle = rand(0, Math.PI * 2);
-        const vx = Math.cos(angle) * speed;
-        const vy = Math.sin(angle) * speed;
+  // spawn continuously but faster & more frequent
+  const spawnInterval = setInterval(createHeart, 280); // every 0.28s
+  const spawnSparkInterval = setInterval(createSpark, 900);
 
-        // rotation and spin
-        const rot = rand(0, 360);
-        const spin = rand(-0.05, 0.12); // deg per ms
+  // spawn a burst on load (more hearts instantly)
+  for(let i=0;i<60;i++){
+    setTimeout(()=> createHeart(rand(5,95)), i*60);
+  }
 
-        // subtle pulsate
-        const scale = rand(0.9, 1.15);
+  // click to spawn a short burst
+  document.addEventListener('click', (e)=>{
+    for(let i=0;i<20;i++){ setTimeout(()=> createHeart((e.clientX/window.innerWidth)*100 + rand(-6,6)), i*30); }
+  });
 
-        // initial style
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
-        el.style.transform = `translate(-50%,-50%) rotate(${rot}deg) scale(${scale})`;
-        el.style.opacity = rand(0.7, 1);
+  // optional: subtle parallax
+  document.addEventListener('mousemove', (ev)=>{
+    const cx = window.innerWidth/2, cy = window.innerHeight/2;
+    const dx = (ev.clientX - cx) / cx;
+    const dy = (ev.clientY - cy) / cy;
+    document.getElementById('card').style.transform = `translate(-50%,-50%) translate(${dx*8}px, ${dy*8}px)`;
+  });
 
-        container.appendChild(el);
-
-        hearts.push({
-          el, x, y, vx, vy, rot, spin, scale,
-          wiggleFactor: rand(0.02, 0.12) // how much velocity wiggles over time
-        });
-      }
-
-      if(prefersReduced){
-        // keep them static-ish if user prefers reduced motion
-        return;
-      }
-
-      // Animation loop
-      let last = performance.now();
-      function tick(now){
-        const dt = Math.min(64, now - last); // ms, cap to avoid jumps
-        last = now;
-        const W = vw(), H = vh();
-        for(const h of hearts){
-          // gentle random acceleration to create organic motion
-          h.vx += (rand(-1,1) * h.wiggleFactor) * (dt / 16);
-          h.vy += (rand(-1,1) * h.wiggleFactor) * (dt / 16);
-
-          // clamp velocity
-          const vmax = 0.9;
-          h.vx = clamp(h.vx, -vmax, vmax);
-          h.vy = clamp(h.vy, -vmax, vmax);
-
-          // update position
-          h.x += h.vx * dt;
-          h.y += h.vy * dt;
-
-          // wrap-around so hearts always stay around the viewport
-          const margin = 60;
-          if(h.x < -margin) h.x = W + margin;
-          if(h.x > W + margin) h.x = -margin;
-          if(h.y < -margin) h.y = H + margin;
-          if(h.y > H + margin) h.y = -margin;
-
-          // gentle rotation change
-          h.rot = (h.rot + h.spin * dt) % 360;
-
-          // apply transform and position
-          h.el.style.left = h.x + 'px';
-          h.el.style.top = h.y + 'px';
-          h.el.style.transform = `translate(-50%,-50%) rotate(${h.rot}deg) scale(${h.scale})`;
-        }
-
-        requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-
-      // Recompute positions on resize to avoid hearts stuck out of bounds
-      window.addEventListener('resize', () => {
-        const W = vw(), H = vh();
-        for(const h of hearts){
-          h.x = clamp(h.x, 0, W);
-          h.y = clamp(h.y, 0, H);
-        }
-      }, {passive:true});
-    })();
-  </script>
+  // free resources when leaving page
+  window.addEventListener('beforeunload', ()=>{
+    clearInterval(spawnInterval);
+    clearInterval(spawnSparkInterval);
+  });
+</script>
 </body>
 </html>
